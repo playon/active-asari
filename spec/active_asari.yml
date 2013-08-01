@@ -1,3 +1,10 @@
 TestModel:
-  name: text
-  amount: uint
+  name: 
+    type: text
+    index: true
+  amount: 
+    type: u_int
+    index: true
+  last_updated:
+    type: u_int
+    index: false

@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '1.9.3'
 
-gem 'asari'
+gem 'asari', :git => 'git://github.com/lgleasain/asari.git'
 gem 'aws-sdk'
 
 group :test, :development do

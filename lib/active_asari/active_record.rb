@@ -1,4 +1,4 @@
-class ActiveAsari
+module ActiveAsari
   module ActiveRecord
 
     def self.included(base)
