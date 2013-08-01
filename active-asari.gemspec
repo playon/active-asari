@@ -21,8 +21,8 @@ Gem::Specification.new do |s|
   # s.add_development_dependency "rspec"
   # s.add_runtime_dependency "rest-client"
 
-  s.add_runtime_dependency "asari", ">=1.12.0"
-  s.add_runtime_dependency 'aws-sdk'
+  s.add_runtime_dependency "asari"
+  s.add_runtime_dependency 'aws-sdk', ">=1.12.0"
 
   s.add_development_dependency "rspec"
 end
