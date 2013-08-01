@@ -1,10 +1,13 @@
 TestModel:
   name: 
-    type: text
-    index: true
+    index_field_type: text
+    search_enabled: true
   amount: 
-    type: u_int
-    index: true
+    index_field_type: uint
+    search_enabled: true
   last_updated:
-    type: u_int
-    index: false
+    index_field_type: uint
+    search_enabled: false
+HoneyBadger:
+  name:
+    index_field_type: text
