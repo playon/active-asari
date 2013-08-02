@@ -9,8 +9,7 @@ module ActiveAsari
 
     def migrate_all
       ACTIVE_ASARI_CONFIG.keys.each do |domain|
-        amazon_domain = domain.underscore.sub /_/, '-' 
-        migrate_domain amazon_domain
+        migrate_domain domain
       end
     end
 
@@ -26,7 +25,7 @@ module ActiveAsari
       index_field_type = field[index_field_name]['index_field_type']
       search_enabled = (field[index_field_name]['search_enabled'] and (field[index_field_name]['search_enabled'].downcase.strip == 'true'))
 
-      request = {:domain_name => domain, :index_field => {:index_field_name => index_field_name,
+      request = {:domain_name => amazon_safe_domain_name(domain), :index_field => {:index_field_name => index_field_name,
       :index_field_type => index_field_type}}
       case index_field_type 
       when 'literal'
@@ -38,7 +37,11 @@ module ActiveAsari
     end
 
     def create_domain(domain)
-      connection.create_domain :domain_name => domain        
+      connection.create_domain :domain_name => amazon_safe_domain_name(domain)        
+    end
+
+    def amazon_safe_domain_name(domain)
+      domain.underscore.sub /_/, '-' 
     end
   end
 end
