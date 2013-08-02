@@ -1,9 +1,11 @@
+require 'lib/active_asari_spec_data'
+include ActiveAsariSpecData
 require 'spec_helper'
 
 describe 'active_record' do
 
   it 'should call asari index with the correct parameters' do
-    TestModel.should_receive(:asari_index).with('test-model', [:name, :amount, :last_updated]) 
+    TestModel.should_receive(:asari_index).with('test-model-7yopqryvjnumbe547ha7xhmjwi', [:name, :amount, :last_updated]) 
     TestModel.send(:active_asari_index, 'TestModel')
   end 
 
@@ -26,7 +28,12 @@ describe 'active_record' do
     end
   end
 
-  context 'migrations' do
-
+  context 'asari_domain_name' do
+    it 'should get the correct domain name' do
+      aws_client = double 'AWS Client'
+      aws_client.should_receive(:describe_domains).and_return DESCRIBE_DOMAINS_RESPONSE 
+      ActiveAsari.should_receive(:aws_client).and_return aws_client
+      ActiveAsari.asari_domain_name('lance-event').should eq 'lance-event-7yopqryvjnumbe547ha7xhmjwi'
+    end
   end
 end
