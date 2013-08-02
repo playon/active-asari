@@ -9,7 +9,8 @@ module ActiveAsari
 
     def migrate_all
       ACTIVE_ASARI_CONFIG.keys.each do |domain|
-        migrate_domain domain
+        amazon_domain = domain.underscore.sub /_/, '-' 
+        migrate_domain amazon_domain
       end
     end
 
