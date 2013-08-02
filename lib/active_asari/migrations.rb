@@ -32,7 +32,7 @@ module ActiveAsari
       when 'text'
         request[:index_field][:text_options] = {:result_enabled => true}
       end
-      connection.create_index_field request
+      connection.define_index_field request
     end
 
     def create_domain(domain)

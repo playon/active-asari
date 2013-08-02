@@ -15,7 +15,7 @@ describe 'migrations' do
       expected_index_field_request = {:domain_name => 'beavis', :index_field => 
         {:index_field_name => 'band_name', :index_field_type => 'literal', :literal_options =>
           {:search_enabled => false, :result_enabled => true}}}
-      migrations.connection.should_receive(:create_index_field).with(expected_index_field_request).and_return CREATE_LITERAL_INDEX_RESPONSE     
+      migrations.connection.should_receive(:define_index_field).with(expected_index_field_request).and_return CREATE_LITERAL_INDEX_RESPONSE     
       migrations.create_index_field('beavis', 'band_name' => { 'index_field_type' => 'literal', 'search_enabled' => false})
     end
 
@@ -23,14 +23,14 @@ describe 'migrations' do
       expected_index_field_request = {:domain_name => 'beavis', :index_field => 
         {:index_field_name => 'tv_location', :index_field_type => 'text', :text_options =>
           {:result_enabled => true}}}
-      migrations.connection.should_receive(:create_index_field).with(expected_index_field_request).and_return CREATE_TEXT_INDEX_RESPONSE 
+      migrations.connection.should_receive(:define_index_field).with(expected_index_field_request).and_return CREATE_TEXT_INDEX_RESPONSE 
       migrations.create_index_field('beavis', 'tv_location' => { 'index_field_type' => 'text'})
     end
 
     it 'should add a uint index to the domain' do
       expected_index_field_request = {:domain_name => 'beavis', :index_field => 
         {:index_field_name => 'num_tvs', :index_field_type => 'uint'}}
-      migrations.connection.should_receive(:create_index_field).with(expected_index_field_request).and_return CREATE_UINT_INDEX_RESPONSE 
+      migrations.connection.should_receive(:define_index_field).with(expected_index_field_request).and_return CREATE_UINT_INDEX_RESPONSE 
       migrations.create_index_field('beavis', 'num_tvs' => { 'index_field_type' => 'uint'})
     end
   end
