@@ -42,7 +42,8 @@ describe 'migrations' do
       migrations.create_domain 'beavis'
     end
 
-    it 'should create indexes for all items in the domain' do
+    it 'should create indexes for all items in the domain and create the domain' do
+      migrations.should_receive(:create_domain).once.with 'TestModel'
       migrations.should_receive(:create_index_field).once.with('TestModel', 
                                                                'name' => { 'index_field_type' => 'text', 
                                                                  'search_enabled' => true})

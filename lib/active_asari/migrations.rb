@@ -14,6 +14,7 @@ module ActiveAsari
     end
 
     def migrate_domain(domain)
+      create_domain domain
       ACTIVE_ASARI_CONFIG[domain].each do |field|
         create_index_field domain, field.first => field.last
       end
