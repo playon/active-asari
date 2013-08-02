@@ -60,8 +60,8 @@ describe 'migrations' do
 
   context 'migrate_all' do
     it 'should migrate all of the domains' do
-      migrations.should_receive(:migrate_domain).once.with 'TestModel'
-      migrations.should_receive(:migrate_domain).once.with 'HoneyBadger'
+      migrations.should_receive(:migrate_domain).once.with 'test-model'
+      migrations.should_receive(:migrate_domain).once.with 'honey-badger'
       migrations.migrate_all
     end
   end
