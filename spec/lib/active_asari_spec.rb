@@ -36,4 +36,15 @@ describe 'active_record' do
       ActiveAsari.asari_domain_name('lance-event').should eq 'lance-event-7yopqryvjnumbe547ha7xhmjwi'
     end
   end
+
+  context 'search' do
+    it 'should search for all available fields for a item' do
+      ActiveAsari.should_receive(:asari_domain_name).with('TestModel').and_return('test-model-666')
+      asari = double('Asari')
+      asari.should_receive(:search).with('foo', :return_fields => [:name, :amount, :last_updated]).and_return(
+        {'33' => {'name' => ['beavis'], 'amount' => ['22'], 'last_updated' => ['4543457887875']}}) 
+      Asari.should_receive(:new).with('test-model-666').and_return asari
+      ActiveAsari.active_asari_search 'TestModel', 'foo'
+    end
+  end
 end
