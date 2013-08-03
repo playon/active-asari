@@ -53,7 +53,8 @@ describe 'migrations' do
       migrations.should_receive(:create_index_field).once.with('TestModel', 
                                                                'last_updated' => { 'index_field_type' => 'uint', 
                                                                  'search_enabled' => false})
-
+      ActiveAsari.should_receive(:amazon_safe_domain_name).with('TestModel').and_return 'test-model-666'
+      migrations.connection.should_receive(:index_documents).with(:domain_name => 'test-model-666')
       migrations.migrate_domain 'TestModel'
     end
   end

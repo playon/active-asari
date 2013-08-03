@@ -18,6 +18,7 @@ module ActiveAsari
       ACTIVE_ASARI_CONFIG[domain].each do |field|
         create_index_field domain, field.first => field.last
       end
+      connection.index_documents :domain_name => ActiveAsari.amazon_safe_domain_name(domain)
     end
 
     def create_index_field(domain, field)
