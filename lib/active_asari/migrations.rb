@@ -19,6 +19,7 @@ module ActiveAsari
         create_index_field domain, field.first => field.last
       end
       connection.index_documents :domain_name => ActiveAsari.amazon_safe_domain_name(domain)
+      update_service_access_policies domain
     end
 
     def update_service_access_policies(domain)
