@@ -29,6 +29,15 @@ describe 'migrations' do
       it 'should default search enabled to false if it is not specified as a blank string' do
         migrations.create_index_field('BeavisButthead', 'band_name' => { 'index_field_type' => 'literal', 'search_enabled' => ''})
       end
+
+    end
+
+    it 'should set search enabled to true if it is a string that evaluates to true' do
+      expected_index_field_request = {:domain_name => 'beavis-butthead', :index_field => 
+        {:index_field_name => 'band_name', :index_field_type => 'literal', :literal_options =>
+          {:search_enabled => true, :result_enabled => true}}}
+          migrations.connection.should_receive(:define_index_field).with(expected_index_field_request).and_return CREATE_LITERAL_INDEX_RESPONSE     
+          migrations.create_index_field('BeavisButthead', 'band_name' => { 'index_field_type' => 'literal', 'search_enabled' => 'true'})
     end
 
     it 'should add a text index to the domain' do
