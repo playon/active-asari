@@ -4,6 +4,7 @@ class CreateTestModel < ActiveRecord::Migration
       t.string :name
       t.integer :amount
       t.datetime :last_updated
+      t.string :bee_larvae_type
     end
   end
 

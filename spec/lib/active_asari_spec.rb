@@ -5,15 +5,15 @@ require 'spec_helper'
 describe 'active_record' do
 
   it 'should call asari index with the correct parameters' do
-    TestModel.should_receive(:asari_index).with('test-model-7yopqryvjnumbe547ha7xhmjwi', [:name, :amount, :last_updated]) 
+    TestModel.should_receive(:asari_index).with('test-model-7yopqryvjnumbe547ha7xhmjwi', [:name, :amount, :last_updated, :bee_larvae_type]) 
     TestModel.send(:active_asari_index, 'TestModel')
   end 
 
   context 'models' do
     it 'should add new records to cloud search' do
       asari_instance = double 'asari instance'
-      asari_instance.should_receive(:update_item).with(1, {:name => 'test', :amount => 2, :last_updated => nil})
-      asari_instance.should_receive(:add_item).with(1, {:name => 'test', :amount => 2, :last_updated => ''})
+      asari_instance.should_receive(:update_item).with(1, {:name => 'test', :amount => 2, :last_updated => nil, :bee_larvae_type => nil})
+      asari_instance.should_receive(:add_item).with(1, {:name => 'test', :amount => 2, :last_updated => '', :bee_larvae_type => ''})
       orig_asari_instance = TestModel.class_variable_get :@@asari_instance
       TestModel.class_variable_set(:@@asari_instance, asari_instance)
       CreateTestModel.up 
@@ -41,7 +41,7 @@ describe 'active_record' do
     it 'should search for all available fields for a item' do
       ActiveAsari.should_receive(:asari_domain_name).with('TestModel').and_return('test-model-666')
       asari = double('Asari')
-      asari.should_receive(:search).with('foo', :return_fields => [:name, :amount, :last_updated]).and_return(
+      asari.should_receive(:search).with('foo', :return_fields => [:name, :amount, :last_updated, :bee_larvae_type]).and_return(
         {'33' => {'name' => ['beavis'], 'amount' => ['22'], 'last_updated' => ['4543457887875']}}) 
       Asari.should_receive(:new).with('test-model-666').and_return asari
       ActiveAsari.active_asari_search 'TestModel', 'foo'

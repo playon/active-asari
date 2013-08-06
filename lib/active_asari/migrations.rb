@@ -36,6 +36,7 @@ module ActiveAsari
       index_field_name = field.keys.first
       index_field_type = field[index_field_name]['index_field_type']
       search_enabled = field[index_field_name]['search_enabled']
+      search_enabled = false if search_enabled == nil
 
       request = {:domain_name => ActiveAsari.amazon_safe_domain_name(domain), :index_field => {:index_field_name => index_field_name,
       :index_field_type => index_field_type}}
