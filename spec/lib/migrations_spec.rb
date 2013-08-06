@@ -25,6 +25,10 @@ describe 'migrations' do
       it 'should default search enabled to false if it is not specified' do
         migrations.create_index_field('BeavisButthead', 'band_name' => { 'index_field_type' => 'literal'})
       end
+
+      it 'should default search enabled to false if it is not specified as a blank string' do
+        migrations.create_index_field('BeavisButthead', 'band_name' => { 'index_field_type' => 'literal', 'search_enabled' => ''})
+      end
     end
 
     it 'should add a text index to the domain' do
