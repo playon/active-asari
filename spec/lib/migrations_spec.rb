@@ -7,7 +7,6 @@ describe 'migrations' do
   let(:migrations) {ActiveAsari::Migrations.new}
 
   before :each do
-      
   end
 
   context 'index_field' do
@@ -32,6 +31,16 @@ describe 'migrations' do
         {:index_field_name => 'num_tvs', :index_field_type => 'uint'}}
       migrations.connection.should_receive(:define_index_field).with(expected_index_field_request).and_return CREATE_UINT_INDEX_RESPONSE 
       migrations.create_index_field('beavis', 'num_tvs' => { 'index_field_type' => 'uint'})
+    end
+  end
+
+  context 'update_service_access_policies' do
+    it 'should allow all access for ip addresses specified in the configuration file' do
+      access_policies = "{\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"*\",\"Resource\":\"*\",\"Condition\":{\"IpAddress\":{\"aws:SourceIp\":[\"192.168.66.23/32\"]}}},{\"Effect\":\"Allow\",\"Action\":\"*\",\"Resource\":\"*\",\"Condition\":{\"IpAddress\":{\"aws:SourceIp\":[\"23.44.23.25/32\"]}}}]}"
+      migrations.connection.should_receive(:update_service_access_policies).with(:domain_name => 'beavis',
+                                                                :access_policies => access_policies)
+      ENV['RACK_ENV'] = 'test'
+      migrations.update_service_access_policies 'beavis'
     end
   end
 

@@ -19,4 +19,10 @@ module ActiveAsari
     fields = ACTIVE_ASARI_CONFIG[domain].map {|field| field.first.to_sym}
     asari.search query, :return_fields => fields
   end
+
+  def self.configure(yaml_file_dir)
+    active_asari_config = YAML.load_file(File.expand_path(yaml_file_dir) + '/active_asari_config.yml')
+    active_asari_env = YAML.load_file(File.expand_path(yaml_file_dir) + '/active_asari_env.yml') 
+    return active_asari_config, active_asari_env
+  end
 end 

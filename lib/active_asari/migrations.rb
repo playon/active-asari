@@ -21,6 +21,16 @@ module ActiveAsari
       connection.index_documents :domain_name => ActiveAsari.amazon_safe_domain_name(domain)
     end
 
+    def update_service_access_policies(domain)
+      policy_array = []
+      asari_env = ENV['RAILS_ENV'] ? ENV['RAILS_ENV'] : ENV['RACK_ENV'] 
+      ACTIVE_ASARI_ENV[asari_env]['access_permissions'].each do |permission|
+        policy_array << {:Effect => :Allow, :Action => '*', :Resource => '*', :Condition => {:IpAddress => {'aws:SourceIp' => [permission['ip_address']]}}} 
+      end
+      access_policies = {:Statement => policy_array}
+      connection.update_service_access_policies :domain_name => domain, :access_policies => access_policies.to_json
+    end
+
     def create_index_field(domain, field)
       index_field_name = field.keys.first
       index_field_type = field[index_field_name]['index_field_type']
