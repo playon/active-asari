@@ -61,6 +61,7 @@ describe 'migrations' do
       access_policies = "{\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"*\",\"Resource\":\"*\",\"Condition\":{\"IpAddress\":{\"aws:SourceIp\":[\"192.168.66.23/32\"]}}},{\"Effect\":\"Allow\",\"Action\":\"*\",\"Resource\":\"*\",\"Condition\":{\"IpAddress\":{\"aws:SourceIp\":[\"23.44.23.25/32\"]}}}]}"
       migrations.connection.should_receive(:update_service_access_policies).with(:domain_name => 'beavis',
                                                                                  :access_policies => access_policies)
+      ENV['RAILS_ENV'] = nil
       ENV['RACK_ENV'] = 'test'
       migrations.update_service_access_policies 'beavis'
     end

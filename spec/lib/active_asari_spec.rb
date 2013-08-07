@@ -4,10 +4,22 @@ require 'spec_helper'
 
 describe 'active_record' do
 
-  it 'should call asari index with the correct parameters' do
-    TestModel.should_receive(:asari_index).with('test-model-7yopqryvjnumbe547ha7xhmjwi', [:name, :amount, :last_updated, :bee_larvae_type]) 
-    TestModel.send(:active_asari_index, 'TestModel')
-  end 
+  context 'asari index' do 
+    it 'should call asari index with the correct parameters' do
+      TestModel.should_receive(:asari_index).with('test-model-7yopqryvjnumbe547ha7xhmjwi', [:name, :amount, :last_updated, :bee_larvae_type]) 
+      TestModel.send(:active_asari_index, 'TestModel')
+    end 
+
+    it 'should call asari index with the correct parameters' do
+      TestModel.should_receive(:asari_index).never
+      ENV['RAILS_ENV'] = 'test' 
+      ENV['RACK_ENV'] = 'development'
+      TestModel.send(:active_asari_index, 'TestModel')
+      ENV['RAILS_ENV'] = 'development'
+      ENV['RACK_ENV'] = 'test'
+      TestModel.send(:active_asari_index, 'TestModel')
+    end 
+  end
 
   context 'models' do
     it 'should add new records to cloud search' do
@@ -43,8 +55,8 @@ describe 'active_record' do
       asari = double('Asari')
       asari.should_receive(:search).with('foo', :return_fields => [:name, :amount, :last_updated, :bee_larvae_type]).and_return(
         {'33' => {'name' => ['beavis'], 'amount' => ['22'], 'last_updated' => ['4543457887875']}}) 
-      Asari.should_receive(:new).with('test-model-666').and_return asari
-      ActiveAsari.active_asari_search 'TestModel', 'foo'
+        Asari.should_receive(:new).with('test-model-666').and_return asari
+        ActiveAsari.active_asari_search 'TestModel', 'foo'
     end
   end
 end
