@@ -1,4 +1,3 @@
-ENV['RAILS_ENV'] = 'test'
 ENV['RACK_ENV'] = 'test'
 require 'simplecov'
 SimpleCov.start

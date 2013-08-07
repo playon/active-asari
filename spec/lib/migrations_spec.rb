@@ -12,7 +12,7 @@ describe 'migrations' do
   context 'index_field' do
     context 'literal fields' do
       before :each do
-        expected_index_field_request = {:domain_name => 'beavis-butthead', :index_field => 
+        expected_index_field_request = {:domain_name => 'test-beavis-butthead', :index_field => 
           {:index_field_name => 'band_name', :index_field_type => 'literal', :literal_options =>
             {:search_enabled => false, :result_enabled => true}}}
             migrations.connection.should_receive(:define_index_field).with(expected_index_field_request).and_return CREATE_LITERAL_INDEX_RESPONSE     
@@ -33,7 +33,7 @@ describe 'migrations' do
     end
 
     it 'should set search enabled to true if it is a string that evaluates to true' do
-      expected_index_field_request = {:domain_name => 'beavis-butthead', :index_field => 
+      expected_index_field_request = {:domain_name => 'test-beavis-butthead', :index_field => 
         {:index_field_name => 'band_name', :index_field_type => 'literal', :literal_options =>
           {:search_enabled => true, :result_enabled => true}}}
           migrations.connection.should_receive(:define_index_field).with(expected_index_field_request).and_return CREATE_LITERAL_INDEX_RESPONSE     
@@ -41,7 +41,7 @@ describe 'migrations' do
     end
 
     it 'should add a text index to the domain' do
-      expected_index_field_request = {:domain_name => 'beavis', :index_field => 
+      expected_index_field_request = {:domain_name => 'test-beavis', :index_field => 
         {:index_field_name => 'tv_location', :index_field_type => 'text', :text_options =>
           {:result_enabled => true}}}
           migrations.connection.should_receive(:define_index_field).with(expected_index_field_request).and_return CREATE_TEXT_INDEX_RESPONSE 
@@ -49,7 +49,7 @@ describe 'migrations' do
     end
 
     it 'should add a uint index to the domain' do
-      expected_index_field_request = {:domain_name => 'beavis', :index_field => 
+      expected_index_field_request = {:domain_name => 'test-beavis', :index_field => 
         {:index_field_name => 'num_tvs', :index_field_type => 'uint'}}
         migrations.connection.should_receive(:define_index_field).with(expected_index_field_request).and_return CREATE_UINT_INDEX_RESPONSE 
         migrations.create_index_field('beavis', 'num_tvs' => { 'index_field_type' => 'uint'})
@@ -70,7 +70,7 @@ describe 'migrations' do
   context 'domain' do
 
     it 'should create a domain if one doesnt exist' do
-      migrations.connection.should_receive(:create_domain).with({:domain_name => 'beavis-butthead'}).and_return CREATE_DOMAIN_RESPONSE    
+      migrations.connection.should_receive(:create_domain).with({:domain_name => 'test-beavis-butthead'}).and_return CREATE_DOMAIN_RESPONSE    
       migrations.create_domain 'BeavisButthead'
     end
 

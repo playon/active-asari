@@ -6,7 +6,9 @@ describe 'active_record' do
 
   context 'asari index' do 
     it 'should call asari index with the correct parameters' do
-      TestModel.should_receive(:asari_index).with('test-model-7yopqryvjnumbe547ha7xhmjwi', [:name, :amount, :last_updated, :bee_larvae_type]) 
+      TestModel.should_receive(:asari_index).with('test-test-model-7yopqryvjnumbe547ha7xhmjwi', [:name, :amount, :last_updated, :bee_larvae_type])
+      ENV['RACK_ENV'] = 'development' 
+      ActiveAsari.should_receive(:asari_domain_name).and_return 'test-test-model-7yopqryvjnumbe547ha7xhmjwi'
       TestModel.send(:active_asari_index, 'TestModel')
     end 
   end
@@ -16,12 +18,12 @@ describe 'active_record' do
       asari_instance = double 'asari instance'
       asari_instance.should_receive(:update_item).with(1, {:name => 'test', :amount => 2, :last_updated => nil, :bee_larvae_type => nil})
       asari_instance.should_receive(:add_item).with(1, {:name => 'test', :amount => 2, :last_updated => '', :bee_larvae_type => ''})
-      orig_asari_instance = TestModel.class_variable_get :@@asari_instance
+      TestModel.class_variable_set(:@@asari_when, nil)
+      TestModel.class_variable_set(:@@asari_fields, [:name, :amount, :last_updated, :bee_larvae_type])
       TestModel.class_variable_set(:@@asari_instance, asari_instance)
       CreateTestModel.up 
       model = TestModel.create :name => 'test', :amount => 2
       model.save
-      TestModel.class_variable_set(:@@asari_instance, orig_asari_instance) 
     end
 
 
@@ -35,7 +37,7 @@ describe 'active_record' do
       aws_client = double 'AWS Client'
       aws_client.should_receive(:describe_domains).and_return DESCRIBE_DOMAINS_RESPONSE 
       ActiveAsari.should_receive(:aws_client).and_return aws_client
-      ActiveAsari.asari_domain_name('lance-event').should eq 'lance-event-7yopqryvjnumbe547ha7xhmjwi'
+      ActiveAsari.asari_domain_name('lance-event').should eq 'test-lance-event-7yopqryvjnumbe547ha7xhmjwi'
     end
   end
 
