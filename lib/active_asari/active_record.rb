@@ -7,7 +7,7 @@ module ActiveAsari
 
     module ClassMethods
       def env_test?
-        (ENV['RAILS_ENV'] != 'test' and ENV['RACK_ENV'] != 'test')
+        (ENV['RAILS_ENV'] == 'test' or ENV['RACK_ENV'] == 'test')
       end
 
       def active_asari_index(class_name)
