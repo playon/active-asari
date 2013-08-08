@@ -42,13 +42,24 @@ describe 'active_record' do
   end
 
   context 'search' do
-    it 'should search for all available fields for a item' do
+    let(:asari) {double 'Asari'}
+
+    before :each do 
       ActiveAsari.should_receive(:asari_domain_name).with('TestModel').and_return('test-model-666')
-      asari = double('Asari')
+    end
+
+    it 'should search for all available fields for a item' do
       asari.should_receive(:search).with('foo', :return_fields => [:name, :amount, :last_updated, :bee_larvae_type]).and_return(
         {'33' => {'name' => ['beavis'], 'amount' => ['22'], 'last_updated' => ['4543457887875']}}) 
         Asari.should_receive(:new).with('test-model-666').and_return asari
         ActiveAsari.active_asari_search 'TestModel', 'foo'
+    end
+
+    it 'should search for all available fields for a item with a binary search' do
+      asari.should_receive(:search).with('foo', :return_fields => [:name, :amount, :last_updated, :bee_larvae_type], :query_type => :boolean).and_return(
+        {'33' => {'name' => ['beavis'], 'amount' => ['22'], 'last_updated' => ['4543457887875']}}) 
+        Asari.should_receive(:new).with('test-model-666').and_return asari
+        ActiveAsari.active_asari_search 'TestModel', 'foo', :boolean
     end
   end
 end
