@@ -6,7 +6,7 @@ describe 'active_record' do
 
   context 'asari index' do 
     it 'should call asari index with the correct parameters' do
-      TestModel.should_receive(:asari_index).with('test-test-model-7yopqryvjnumbe547ha7xhmjwi', [:name, :amount, :last_updated, :bee_larvae_type])
+      TestModel.should_receive(:asari_index).with('test-test-model-7yopqryvjnumbe547ha7xhmjwi', [:name, :amount, :last_updated, :bee_larvae_type, :active_asari_id])
       ENV['RACK_ENV'] = 'development' 
       ActiveAsari.should_receive(:asari_domain_name).and_return 'test-test-model-7yopqryvjnumbe547ha7xhmjwi'
       TestModel.send(:active_asari_index, 'TestModel')
@@ -14,7 +14,7 @@ describe 'active_record' do
   end
 
   context 'models' do
-    it 'should add new records to cloud search' do
+    it 'should add new records to cloud search and alias object id and active_asari_id' do
       asari_instance = double 'asari instance'
       asari_instance.should_receive(:update_item).with(1, {:name => 'test', :amount => 2, :last_updated => nil, :bee_larvae_type => nil})
       asari_instance.should_receive(:add_item).with(1, {:name => 'test', :amount => 2, :last_updated => '', :bee_larvae_type => ''})
@@ -24,6 +24,7 @@ describe 'active_record' do
       CreateTestModel.up 
       model = TestModel.create :name => 'test', :amount => 2
       model.save
+      model.id.should eq model.active_asari_id
     end
 
 

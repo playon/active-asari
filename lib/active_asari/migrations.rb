@@ -18,6 +18,7 @@ module ActiveAsari
       ACTIVE_ASARI_CONFIG[domain].each do |field|
         create_index_field domain, field.first => field.last
       end
+      create_index_field domain, 'active_asari_id' => {'index_field_type' => 'uint'}
       connection.index_documents :domain_name => ActiveAsari.amazon_safe_domain_name(domain)
       update_service_access_policies ActiveAsari.amazon_safe_domain_name(domain)
     end

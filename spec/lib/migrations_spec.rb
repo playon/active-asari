@@ -87,6 +87,8 @@ describe 'migrations' do
                                                                  'search_enabled' => false})
       migrations.should_receive(:create_index_field).once.with('TestModel', 
                                                                'bee_larvae_type' => { 'index_field_type' => 'literal'})
+      migrations.should_receive(:create_index_field).once.with('TestModel', 
+                                                               'active_asari_id' => { 'index_field_type' => 'uint'})
       ActiveAsari.should_receive(:amazon_safe_domain_name).twice.with('TestModel').and_return 'test-model-666'
       migrations.should_receive(:update_service_access_policies).once.with('test-model-666')
       migrations.connection.should_receive(:index_documents).with(:domain_name => 'test-model-666')
