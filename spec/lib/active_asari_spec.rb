@@ -14,7 +14,7 @@ describe 'active_record' do
   end
 
   context 'models' do
-    it 'should add new records to cloud search and alias object id and active_asari_id' do
+    before :each do
       asari_instance = double 'asari instance'
       asari_instance.should_receive(:update_item).with(1, {:name => 'test', :amount => 2, :last_updated => nil, :bee_larvae_type => nil})
       asari_instance.should_receive(:add_item).with(1, {:name => 'test', :amount => 2, :last_updated => '', :bee_larvae_type => ''})
@@ -22,13 +22,15 @@ describe 'active_record' do
       TestModel.class_variable_set(:@@asari_fields, [:name, :amount, :last_updated, :bee_larvae_type])
       TestModel.class_variable_set(:@@asari_instance, asari_instance)
       CreateTestModel.up 
-      model = TestModel.create :name => 'test', :amount => 2
-      model.save
-      model.id.should eq model.active_asari_id
+      @model = TestModel.create :name => 'test', :amount => 2
+      @model.save
     end
 
+    it 'should add new records to cloud search and alias object id and active_asari_id' do
+      @model.id.should eq @model.active_asari_id
+    end
 
-    after do 
+    after :each do 
       CreateTestModel.down
     end
   end
@@ -50,14 +52,14 @@ describe 'active_record' do
     end
 
     it 'should search for all available fields for a item' do
-      asari.should_receive(:search).with('foo', :return_fields => [:name, :amount, :last_updated, :bee_larvae_type]).and_return(
+      asari.should_receive(:search).with('foo', :return_fields => [:name, :amount, :last_updated, :bee_larvae_type, :active_asari_id]).and_return(
         {'33' => {'name' => ['beavis'], 'amount' => ['22'], 'last_updated' => ['4543457887875']}}) 
         Asari.should_receive(:new).with('test-model-666').and_return asari
         ActiveAsari.active_asari_search 'TestModel', 'foo'
     end
 
     it 'should search for all available fields for a item with a binary search' do
-      asari.should_receive(:search).with('foo', :return_fields => [:name, :amount, :last_updated, :bee_larvae_type], :query_type => :boolean).and_return(
+      asari.should_receive(:search).with('foo', :return_fields => [:name, :amount, :last_updated, :bee_larvae_type, :active_asari_id], :query_type => :boolean).and_return(
         {'33' => {'name' => ['beavis'], 'amount' => ['22'], 'last_updated' => ['4543457887875']}}) 
         Asari.should_receive(:new).with('test-model-666').and_return asari
         ActiveAsari.active_asari_search 'TestModel', 'foo', :boolean

@@ -18,6 +18,7 @@ module ActiveAsari
   def self.active_asari_search(domain, query, boolean_search = :regular)
     asari = Asari.new asari_domain_name(domain)
     fields = ACTIVE_ASARI_CONFIG[domain].map {|field| field.first.to_sym}
+    fields = fields.concat([:active_asari_id])
     search_options = {:return_fields => fields}
     search_options[:query_type] = :boolean if boolean_search == :boolean
     asari.search query, search_options
