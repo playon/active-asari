@@ -62,22 +62,22 @@ describe 'active_record' do
       asari.should_receive(:search).with('foo', :return_fields => [:name, :amount, :last_updated, :bee_larvae_type, :active_asari_id], :query_type => :boolean).and_return(
         {'33' => {'name' => ['beavis'], 'amount' => ['22'], 'last_updated' => ['4543457887875']}}) 
         Asari.should_receive(:new).with('test-model-666').and_return asari
-        ActiveAsari.active_asari_raw_search 'TestModel', 'foo', :boolean
+        ActiveAsari.active_asari_raw_search 'TestModel', 'foo', :query_type => :boolean
     end
   end
 
   context 'active_asari_search' do
     let(:raw_result) {{'33' => {'name' => ['beavis'], 'amount' => ['22'], 'last_updated' => ['4543457887875']}}}
     it 'should call out to do a raw search and then objectify the results' do
-      ActiveAsari.should_receive(:active_asari_raw_search).with('TestModel', 'foo', :regular).and_return(raw_result) 
+      ActiveAsari.should_receive(:active_asari_raw_search).with('TestModel', 'foo', {}).and_return(raw_result) 
       ActiveAsari.should_receive(:objectify_results).with(raw_result).and_return({'33' => 'stuff'})
       ActiveAsari.active_asari_search 'TestModel', 'foo'
     end
      
     it 'should pass on the parameters for a boolean search' do 
-      ActiveAsari.should_receive(:active_asari_raw_search).with('TestModel', 'foo', :boolean).and_return(raw_result) 
+      ActiveAsari.should_receive(:active_asari_raw_search).with('TestModel', 'foo', :query_type => :boolean).and_return(raw_result) 
       ActiveAsari.should_receive(:objectify_results).with(raw_result).and_return({'33' => 'stuff'})
-      ActiveAsari.active_asari_search 'TestModel', 'foo', :boolean
+      ActiveAsari.active_asari_search 'TestModel', 'foo', :query_type => :boolean
     end
   end
 

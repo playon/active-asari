@@ -15,12 +15,11 @@ module ActiveAsari
     domain_data.first[:search_service][:endpoint].split('.').first[7..-1]
   end
 
-  def self.active_asari_raw_search(domain, query, boolean_search = :regular)
+  def self.active_asari_raw_search(domain, query, search_options = {})
     asari = Asari.new asari_domain_name(domain)
     fields = ACTIVE_ASARI_CONFIG[domain].map {|field| field.first.to_sym}
     fields = fields.concat([:active_asari_id])
-    search_options = {:return_fields => fields}
-    search_options[:query_type] = :boolean if boolean_search == :boolean
+    search_options[:return_fields] = fields
     asari.search query, search_options
   end
 
@@ -33,8 +32,8 @@ module ActiveAsari
     results
   end
 
-  def self.active_asari_search(domain, query, boolean_search = :regular)
-    raw_result = active_asari_raw_search domain, query, boolean_search
+  def self.active_asari_search(domain, query, search_options = {})
+    raw_result = active_asari_raw_search domain, query, search_options
     objectify_results raw_result
   end
 
