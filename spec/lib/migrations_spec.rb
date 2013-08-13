@@ -37,7 +37,7 @@ describe 'migrations' do
         {:index_field_name => 'band_name', :index_field_type => 'literal', :literal_options =>
           {:search_enabled => true, :result_enabled => true}}}
           migrations.connection.should_receive(:define_index_field).with(expected_index_field_request).and_return CREATE_LITERAL_INDEX_RESPONSE     
-          migrations.create_index_field('BeavisButthead', 'band_name' => { 'index_field_type' => 'literal', 'search_enabled' => 'true'})
+          migrations.create_index_field('BeavisButthead', 'band_name' => { 'index_field_type' => 'literal', 'search_enabled' => true})
     end
 
     it 'should add a text index to the domain' do
