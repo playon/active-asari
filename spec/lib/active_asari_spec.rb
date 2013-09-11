@@ -36,10 +36,11 @@ describe 'active_record' do
   end
 
   context 'asari_domain_name' do
-    it 'should get the correct domain name' do
+    it 'should get the correct domain name and only call Amazon once' do
       aws_client = double 'AWS Client'
-      aws_client.should_receive(:describe_domains).and_return DESCRIBE_DOMAINS_RESPONSE 
-      ActiveAsari.should_receive(:aws_client).and_return aws_client
+      aws_client.should_receive(:describe_domains).once.and_return DESCRIBE_DOMAINS_RESPONSE 
+      ActiveAsari.should_receive(:aws_client).once.and_return aws_client
+      ActiveAsari.asari_domain_name('lance-event').should eq 'test-lance-event-7yopqryvjnumbe547ha7xhmjwi'
       ActiveAsari.asari_domain_name('lance-event').should eq 'test-lance-event-7yopqryvjnumbe547ha7xhmjwi'
     end
   end

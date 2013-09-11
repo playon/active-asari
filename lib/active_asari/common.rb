@@ -1,4 +1,5 @@
 module ActiveAsari
+
   def self.amazon_safe_domain_name(domain)
     environment = ENV['RAILS_ENV'] ? ENV['RAILS_ENV'] : ENV['RACK_ENV'] 
     "#{ACTIVE_ASARI_ENV[environment]['domain_prefix']}-#{domain.underscore.sub(/_/, '-')}" 
@@ -9,10 +10,14 @@ module ActiveAsari
   end
 
   def self.asari_domain_name(domain)
+    $domains = {} if !$domains
     amazon_domain = amazon_safe_domain_name domain
-    domain_data = aws_client.describe_domains[:domain_status_list].select { |domain_data|  
-      domain_data[:domain_name] == amazon_domain}
-    domain_data.first[:search_service][:endpoint].split('.').first[7..-1]
+    if !$domains[amazon_domain]
+      domain_data = aws_client.describe_domains[:domain_status_list].select { |domain_data|  
+        domain_data[:domain_name] == amazon_domain}
+      $domains[amazon_domain] = domain_data.first[:search_service][:endpoint].split('.').first[7..-1]
+    end
+    $domains[amazon_domain] 
   end
 
   def self.active_asari_raw_search(domain, query, search_options = {})
