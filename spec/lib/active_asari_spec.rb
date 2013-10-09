@@ -7,6 +7,7 @@ describe 'active_record' do
   context 'asari index' do 
     it 'should call asari index with the correct parameters' do
       TestModel.should_receive(:asari_index).with('test-test-model-7yopqryvjnumbe547ha7xhmjwi', [:name, :amount, :last_updated, :bee_larvae_type, :active_asari_id])
+      ENV['RAILS_ENV'] = 'development'
       ENV['RACK_ENV'] = 'development' 
       ActiveAsari.should_receive(:asari_domain_name).and_return 'test-test-model-7yopqryvjnumbe547ha7xhmjwi'
       TestModel.send(:active_asari_index, 'TestModel')
